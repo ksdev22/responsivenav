@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@1,300&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        #logo {
+            width: 100%;
+            height: 50px;
+            background-color: teal;
+            display: flex;
+            align-items: center;
+        }
+
+        #logo h1 {
+            margin-left: 1rem;
+        }
+
+        nav {
+            display: flex;
+            flex-direction: row;
+            background-color: #858585;
+            color: white;
+            width: 100%;
+            height: 50px;
+            z-index: 999;
+            position: sticky;
+            top: 0px;
+            left: 0px;
+        }
+
+        .wrapper {
+            display: flex;
+            flex-direction: row;
+            background-color: #858585;
+            color: white;
+            width: 100%;
+            height: 50px;
+        }
+
+        .list-items {
+            display: flex;
+            align-items: center;
+            font-size: 1.2rem;
+            font-family: 'Roboto';
+            padding: 0 10px;
+            margin: 0 2rem;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        #search {
+            align-self: center;
+            margin-left: auto;
+            text-align: right;
+        }
+
+        #search form input {
+            font-size: 1rem;
+            border-radius: 8px;
+            border: 0.5px solid grey;
+        }
+
+        #search form button {
+            border: none;
+            font-family: 'Roboto';
+            font-size: 1rem;
+            background-color: white;
+            color: black;
+            border-radius: 10px;
+            width: 100px;
+            cursor: pointer;
+            transition: background-color 0.5s;
+        }
+
+        #search form button:hover {
+            background-color: rgb(207, 207, 207);
+            color: black;
+        }
+
+        #button {
+            display: none;
+        }
+
+        .to-add {
+            position: sticky;
+            top: 50px;
+            left: 0px;
+            width: 100%;
+        }
+
+        .expand {
+            height: 200px !important;
+        }
+
+        .click-effect {
+            transform: translate(0.5px, 0.5px);
+        }
+
+        .scroll {
+            background-color: black;
+        }
+
+        @media (max-width : 780px) {
+            .wrapper {
+                flex-direction: column;
+                align-items: flex-end;
+                background-color: rgb(53, 53, 53);
+                height: 0;
+                overflow: hidden;
+                transition: height 1s;
+            }
+
+            .list-items {
+                margin-top: 0.5rem;
+                margin-bottom: 0.5rem;
+            }
+
+            #button {
+                display: block;
+                margin: 0;
+                margin-left: auto;
+                margin-right: 2rem;
+                align-self: center;
+                background-color: white;
+                border-radius: 10px;
+                width: 40px;
+                height: 40px;
+                cursor: pointer;
+            }
+
+            #button img {
+                width: 100%;
+            }
+        }
+
+        .main {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .sidebars {
+            width: 10%;
+            height: max-content;
+            border: 2px solid blue;
+            margin: 0 auto;
+            padding: 0.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-evenly;
+            align-items: center;
+        }
+
+        .draggable {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+
+        .draggable:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .invisible {
+            display: none;
+        }
+
+        .selected {
+            border-style: dashed;
+        }
+
+        .center {
+            width: 75%;
+            height: max-content;
+            margin: 0 0;
+            background-color: rgb(247, 147, 129);
+        }
+
+        footer {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="logo">
+        <h1>Welcome</h1>
+    </div>
+    <nav>
+        <div class="wrapper">
+            <div class="list-items">Home</div>
+            <div class="list-items">About</div>
+            <div class="list-items">Services</div>
+            <div class="list-items">Contact Us</div>
+            <div class="list-items" id="search">
+                <form action="">
+                    <input type="text">
+                    <button>Search</button>
+                </form>
+            </div>
+        </div>
+        <div id="button"><img
+                src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b2/Hamburger_icon.svg/1024px-Hamburger_icon.svg.png"
+                alt=""></div>
+    </nav>
+    <div class="to-add"></div>
+    <div class="main">
+        <div class="sidebars">
+            <div class="draggable" id="one" draggable="true" style="background-color: teal;"></div>
+            <div class="draggable" id="two" draggable="true" style="background-color: chocolate;"></div>
+        </div>
+        <div class="center">FIRST PAGE Lorem ipsum dolor sit amet consectetur, adipisicing elit. Eius ab quisquam
+            officia corrupti
+            explicabo voluptatibus ratione nulla consectetur, rerum, veritatis vitae quas deserunt temporibus eos
+            laudantium
+            magnam rem harum suscipit tempora mollitia ullam in tempore voluptas expedita! Exercitationem perspiciatis
+            repellendus corporis iusto explicabo earum, possimus, debitis a sint, nobis voluptate nemo accusantium quis
+            laudantium voluptates numquam culpa doloribus veritatis consequuntur consequatur mollitia cupiditate! Autem
+            aperiam magni illo distinctio consequuntur deleniti minima! Porro facere nisi, consequuntur hic delectus
+            labore
+            rem voluptatem excepturi officia quisquam exercitationem vitae dignissimos magni adipisci illum deserunt
+            aspernatur praesentium, aut doloribus. Culpa voluptatibus qui non ducimus obcaecati! Officia maxime
+            perferendis,
+            earum est atque reiciendis explicabo nesciunt soluta nemo assumenda libero dicta id cupiditate quisquam,
+            debitis
+            fugiat consequuntur saepe in sit ea. Reprehenderit velit eum adipisci nemo repellat, aut nobis ipsa est unde
+            odit maxime labore quos. Enim repudiandae autem consequuntur facilis animi. Molestiae suscipit quia facere,
+            delectus, nam cumque minima doloribus ex laboriosam porro totam voluptatum ullam provident expedita magni
+            quis
+            dignissimos facilis, rem error ad tempore possimus vel. Nemo, error architecto omnis adipisci sit
+            necessitatibus
+            nihil similique in explicabo dolores accusamus reiciendis et facilis repellat beatae voluptatem dolor
+            tenetur
+            voluptates officiis? Nesciunt itaque odit assumenda explicabo praesentium porro tempora ut. Veniam, libero
+            iure
+            dignissimos, eius consequuntur maiores tenetur asperiores fugiat et doloremque molestiae repellendus ex
+            soluta
+            ratione nesciunt ipsum quasi corrupti omnis magnam cumque? Mollitia nostrum perspiciatis aut debitis
+            expedita
+            quia impedit quibusdam iure. Corrupti sequi molestiae voluptatem provident ipsam ratione incidunt. Rem nobis
+            eaque optio sint similique quo incidunt est odit placeat impedit sed itaque consequatur quia officia ipsam
+            harum, ipsum atque voluptas! Sint fuga amet impedit laudantium esse sequi alias consequatur cum autem. Ea
+            necessitatibus ducimus quasi sed, vel autem consequuntur tempora laborum at voluptate. Repudiandae sunt,
+            ducimus
+            reprehenderit incidunt cupiditate ipsa nostrum illum beatae totam maiores hic! Quo inventore hic, sequi,
+            laboriosam assumenda sunt ipsum nam error itaque numquam sapiente facilis atque, molestias rerum. Incidunt
+            consequuntur voluptatem, adipisci eum nam similique consectetur minus corrupti repellat tenetur itaque enim
+            ipsum deleniti accusantium nesciunt dicta suscipit maxime labore non optio cupiditate facilis delectus
+            temporibus! Numquam maxime exercitationem cupiditate laudantium, doloremque, tenetur, dolorem eos veritatis
+            reiciendis voluptas magnam eius ducimus enim sit fugiat. Sunt doloribus labore quaerat temporibus placeat
+            exercitationem veritatis ducimus libero provident quisquam, facilis vel, blanditiis perspiciatis ipsum sit
+            porro
+            enim asperiores nulla illum eum? Harum, asperiores ipsum distinctio deleniti optio, aperiam, doloremque
+            nostrum
+            praesentium minus ab laboriosam dicta autem nihil similique. Expedita asperiores eligendi pariatur, corrupti
+            itaque atque fugiat architecto officiis fugit vero ipsa eaque quas quisquam, ut recusandae quibusdam
+            excepturi
+            enim voluptate laborum numquam. Suscipit impedit fuga tempore. Quos maxime excepturi, nulla perspiciatis
+            fuga
+            alias pariatur blanditiis odit nobis consectetur, eius est, reiciendis voluptatibus earum aspernatur
+            consequuntur placeat. Architecto error dolores explicabo, aliquam sequi veniam nam, facere perferendis
+            corporis
+            recusandae cupiditate debitis asperiores magni. Repudiandae voluptates aliquid ipsam quasi porro quae, ad
+            aperiam magni numquam corporis unde fuga et soluta nobis quod corrupti explicabo provident beatae veritatis
+            velit. Beatae consectetur debitis incidunt. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Mollitia,
+            quasi nobis! Deserunt ab velit repellat ipsam exercitationem architecto numquam fugiat aliquam molestiae
+            cumque
+            ea laudantium accusamus quas, atque ipsum perspiciatis. Excepturi itaque ducimus officia dolorum
+            voluptatibus,
+            expedita blanditiis ea, provident in quos, vel vero cumque libero. A hic quam voluptates ipsam distinctio
+            voluptate, autem neque officiis quae consequatur molestiae voluptas nobis! Quidem minima itaque, in ratione
+            enim
+            a. Accusamus deserunt nostrum quis optio distinctio laboriosam corporis, mollitia impedit, nobis amet nisi
+            perferendis, sunt excepturi illum in earum quaerat minima nam pariatur quas eum ipsum est vero sapiente! Sit
+            facere beatae repellat minima hic laboriosam alias amet. Doloremque ut laboriosam, fugiat ducimus delectus
+            aspernatur officiis sit quidem quibusdam dicta commodi ea, ratione consequuntur explicabo ab dolore autem
+            ipsa
+            accusamus! Pariatur harum accusamus, non quas dolore vero veniam consequuntur doloremque autem nisi
+            exercitationem deleniti saepe veritatis commodi ratione illo sunt ipsum reprehenderit odio nihil et eaque
+            suscipit? Dolore, aliquid in architecto et laudantium excepturi voluptatum maxime ex eius autem! Odit dicta
+            accusantium quibusdam enim assumenda expedita, deserunt, officia deleniti facere quasi nulla, architecto
+            beatae!
+            At, quod eveniet ad, reiciendis iste ullam, dolor quos vel laudantium velit saepe eligendi beatae animi a
+            non?
+            Molestias libero eveniet fugit ad pariatur facilis dolor debitis veritatis fugiat minima officia,
+            consequuntur
+            odio iure velit voluptas hic perferendis beatae cumque rerum soluta ab! Odit aperiam asperiores alias!
+            Aliquid
+            laboriosam veniam quae iusto, assumenda explicabo veritatis nostrum eveniet dolor quidem debitis obcaecati
+            perferendis, ut quaerat commodi? Ad animi expedita ex maiores totam, necessitatibus praesentium repudiandae
+            nihil voluptatum, commodi dolores similique, quaerat laborum cupiditate deserunt iste fuga aliquid magni
+            dicta
+            consequuntur sunt consequatur maxime perferendis. Molestiae, facilis quis nam velit deleniti cum quidem
+            dolorum
+            exercitationem, consectetur ducimus corporis, inventore laboriosam eveniet cumque quibusdam hic odit
+            nostrum.
+            Maxime placeat quo illo, perferendis saepe consequatur eligendi velit? Aliquid molestias eaque porro ducimus
+            atque numquam maxime vitae odio, labore corporis, sunt rem tempora vel, doloribus aut beatae quam natus
+            quidem
+            veritatis et quas commodi obcaecati neque. Enim dicta maxime modi aliquam amet iste possimus error harum
+            vero
+            perspiciatis nam totam eveniet, quam aliquid quod obcaecati quasi distinctio ullam repudiandae nesciunt ex
+            quo!
+            Quaerat voluptatum similique commodi dignissimos eveniet quam eligendi cum deleniti praesentium rem, porro
+            incidunt, reiciendis, unde officia iste doloribus ratione! Alias, quisquam nostrum natus qui fuga quos rerum
+            ipsa necessitatibus consectetur at ad earum esse. Iste quam culpa similique. Excepturi, rerum. Officiis
+            dolorum
+            fugiat quisquam debitis repellat quasi, repudiandae accusantium! Reiciendis ducimus quas dignissimos! Cum ad
+            voluptas earum fugiat et similique laboriosam quibusdam ut, totam tempore vero veniam, ipsa ipsam atque
+            maiores
+            assumenda modi voluptates? Dolorum fugit saepe reprehenderit impedit? Recusandae illo similique iusto nisi
+            sapiente praesentium quo suscipit aliquam, consequuntur tenetur error, quod aliquid, molestias voluptatibus
+            quae
+            quos. Quaerat dolorum, voluptatem similique perspiciatis non possimus laboriosam nam omnis fuga vel vitae
+            libero! Odio harum quisquam dolore natus excepturi odit, deleniti perferendis nemo veniam optio quidem
+            numquam
+            voluptates repellendus iure id cupiditate aut eos est suscipit sint nihil unde culpa soluta?
+        </div>
+        <div class="sidebars">
+            <div class="draggable" id="three" draggable="true" style="background-color: turquoise;"></div>
+            <div class="draggable" id="four" draggable="true" style="background-color: violet;"></div>
+        </div>
+    </div>
+    <footer></footer>
+    <script src="index.js"></script>
+</body>
+
+</html>
+<!-- ondragstart="event.dataTransfer.setData('text/plain',null)" -->
